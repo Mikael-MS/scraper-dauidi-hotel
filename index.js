@@ -15,8 +15,8 @@ async function scraperDiaudi() {
     const html = await page.content();
     const $ = cheerio.load(html);
 
-    const teste = $('#apartamento_categoria_2339 > div.row > div.col-12.col-lg-7 > div.row.head-apto > div > span').text();
-    console.log('Nome suite:',teste);
+    const nameSuite = $('#apartamento_categoria_2339 > div.row > div.col-12.col-lg-7 > div.row.head-apto > div > span').text();
+    console.log('Name Room:',nameSuite);
 
     await browser.close();
 }
