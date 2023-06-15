@@ -15,8 +15,15 @@ async function scraperDiaudi() {
     const html = await page.content();
     const $ = cheerio.load(html);
 
-    const nameSuite = $('#apartamento_categoria_2339 > div.row > div.col-12.col-lg-7 > div.row.head-apto > div > span').text();
-    console.log('Name Room:',nameSuite);
+    $('body > div.container-padrao.reserva > div > div > div > div.content-reserva > div > div.col-12.col-lg-9.pr-lg-0 > div:nth-child(3) > div > div').each((i,e) => {
+        const nameSuite = $(e).find('div > form > div.row > div.col-12.col-lg-7 > div.row.head-apto > div > span').text()
+        console.log(nameSuite);
+        const totalPrice = $(e).find('div > form > div.info-reserva-quarto > div.tarifas > div:nth-child(2) > div > div.col-6.col-sm-6 > span').text()
+        console.log(totalPrice);
+        const dailyPrice = $(e).find('div > form > div.info-reserva-quarto > div.tarifas > div:nth-child(2) > div > div.col-6.col-sm-3 > span > span.valor-sem-desconto > span').text()
+        console.log(dailyPrice);
+    });
+    
 
     await browser.close();
 }
