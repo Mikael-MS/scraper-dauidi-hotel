@@ -1,0 +1,28 @@
+[
+    {
+        "nameRoom": "Flat",
+        "description": "",
+        "totalPrice": 618,
+        "dayliPrice": 309,
+        "amenities": [
+            "Ar condicionado",
+            "Minibar",
+            "Café da manhã",
+            "Internet WiFi",
+            "TV LED a cabo 32´´",
+            "Mini Cozinha",
+            "Varanda",
+            "Garagem com Manobrista",
+            "Telefone"
+        ],
+        "photoMain": "https://static.silbeck.com.br/sbreserva/imagens/apartamento_categoria/097f21f0acf8352faacbe7fe6d208e7b.jpg",
+        "photos": [
+            "https://static.silbeck.com.br/sbreserva/imagens/apartamento_categoria/097f21f0acf8352faacbe7fe6d208e7b.jpg",
+            "https://static.silbeck.com.br/sbreserva/imagens/apartamento_categoria/489141e8d7a2ac1d6684b366d80a7c90.jpg",
+            "https://static.silbeck.com.br/sbreserva/imagens/apartamento_categoria/f40d28a54fc5cb7de928d5615c48bbf2.jpg",
+            "https://static.silbeck.com.br/sbreserva/imagens/apartamento_categoria/cf453533c31f2a1afbd7251cab40c1d9.jpg"
+        ],
+        "adults": 2,
+        "children": 1
+    }
+]
