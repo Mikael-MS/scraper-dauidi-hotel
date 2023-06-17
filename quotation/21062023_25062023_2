@@ -2,8 +2,8 @@
     {
         "nameRoom": "Flat",
         "description": "",
-        "totalPrice": 618,
-        "dayliPrice": 309,
+        "totalPrice": 1186,
+        "dailyPrice": 296.5,
         "amenities": [
             "Ar condicionado",
             "Minibar",

@@ -4,20 +4,20 @@ const moment = require('moment');
 const fs = require('fs');
 
 function formatDate(date) {
-   return moment(date).format('DDMMYYYY')
+    return moment(date).format('DDMMYYYY')
 }
 
 function formatPrices(price) {
-    let priceSplit = price.split('R$');
+    const priceSplit = price.split('R$');
     if (priceSplit.length > 1) {
-        let priceText = priceSplit[1];
+        const priceText = priceSplit[1];
         let numberPrice = '';
         if (priceText.includes('.')) {
-            let replacePoint = priceText.replace('.', '');
-            let replaceComma = replacePoint.replace(',', '.');
+            const replacePoint = priceText.replace('.', '');
+            const replaceComma = replacePoint.replace(',', '.');
             numberPrice = formatDecimal(replaceComma);
         } else {
-            let replaceComma2 = priceText.replace(',', '.');
+            const replaceComma2 = priceText.replace(',', '.');
             numberPrice = formatDecimal(replaceComma2);
         }
         return numberPrice
@@ -26,11 +26,12 @@ function formatPrices(price) {
 }
 
 function formatDecimal(priceTxt) {
-    let nrPrice = parseFloat((priceTxt)).toFixed(2);
+    const nrPrice = parseFloat((priceTxt)).toFixed(2);
     return parseFloat(nrPrice)
 }
 
 async function scraperDiaudi(checkin, checkout, adults, children) {
+
     if (moment().isAfter(checkin) || moment(checkin).isAfter(checkout)) {
         return 'Invalid checkin or checkout';
     }
@@ -46,9 +47,9 @@ async function scraperDiaudi(checkin, checkout, adults, children) {
     const numberChildren = Number(children);
 
 
-    let url = `https://sbreserva.silbeck.com.br/diaudihotel/pt-br/reserva/busca/checkin/${dateCheckin}/checkout/${dateCheckout}/adultos-000001/${numberAdults}/criancas-000004/${numberChildren}`
+    const url = `https://sbreserva.silbeck.com.br/diaudihotel/pt-br/reserva/busca/checkin/${dateCheckin}/checkout/${dateCheckout}/adultos-000001/${numberAdults}/criancas-000004/${numberChildren}`
 
-    const browser = await pup.launch({ headless: false });
+    const browser = await pup.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url);
     await page.waitForSelector('body > div.container-padrao.reserva > div > div > div > div.content-reserva > div > div.col-12.col-lg-9.pr-lg-0 > div:nth-child(3) > div');
@@ -58,14 +59,14 @@ async function scraperDiaudi(checkin, checkout, adults, children) {
 
     const roomData = [];
     $('body > div.container-padrao.reserva > div > div > div > div.content-reserva > div > div.col-12.col-lg-9.pr-lg-0 > div:nth-child(3) > div > div').each((i, room) => {
-    
-        let nameRooms = $(room).find('div > form > div.row > div.col-12.col-lg-7 > div.row.head-apto > div > span');
+
+        const nameRooms = $(room).find('div > form > div.row > div.col-12.col-lg-7 > div.row.head-apto > div > span');
         const nameRoom = nameRooms ? nameRooms.text() : '';
 
-        let totalPrices = $(room).find('div > form > div.info-reserva-quarto > div.tarifas > div:nth-child(2) > div > div.col-6.col-sm-6 > span');
+        const totalPrices = $(room).find('div > form > div.info-reserva-quarto > div.tarifas > div:nth-child(2) > div > div.col-6.col-sm-6 > span');
         const totalPrice = totalPrices ? totalPrices.text() : '';
 
-        let dailyPrices = $(room).find('div > form > div.info-reserva-quarto > div.tarifas > div:nth-child(2) > div > div.col-6.col-sm-3 > span > span.valor-sem-desconto > span');
+        const dailyPrices = $(room).find('div > form > div.info-reserva-quarto > div.tarifas > div:nth-child(2) > div > div.col-6.col-sm-3 > span > span.valor-sem-desconto > span');
         const dailyPrice = dailyPrices ? dailyPrices.text() : '';
 
 
@@ -82,7 +83,7 @@ async function scraperDiaudi(checkin, checkout, adults, children) {
         }
 
 
-        let imgMain = $(room).find('div > form > div.row > div.col-12.col-lg-5.pr-lg-0 > div > div > div.owl-stage-outer > div > div.owl-item.active > div > a');
+        const imgMain = $(room).find('div > form > div.row > div.col-12.col-lg-5.pr-lg-0 > div > div > div.owl-stage-outer > div > div.owl-item.active > div > a');
         const photoMain = imgMain ? imgMain.attr('href') : '';
 
 
@@ -101,7 +102,7 @@ async function scraperDiaudi(checkin, checkout, adults, children) {
             'nameRoom': nameRoom,
             'description': '',
             'totalPrice': formatPrices(totalPrice),
-            'dayliPrice': formatPrices(dailyPrice),
+            'dailyPrice': formatPrices(dailyPrice),
             'amenities': setOfAmenities,
             'photoMain': photoMain,
             'photos': allImages,
@@ -112,16 +113,16 @@ async function scraperDiaudi(checkin, checkout, adults, children) {
         return roomData
     });
 
-    fs.writeFileSync(`./quotation/${formatDate(checkin)}_${formatDate(checkout)}_${adults}`, JSON.stringify(roomData), { encoding: 'utf-8' } )
+    fs.writeFileSync(`./quotation/${formatDate(checkin)}_${formatDate(checkout)}_${adults}`, JSON.stringify(roomData), { encoding: 'utf-8' })
 
 
     await browser.close();
 }
 
-let checkin = new Date('2023-06-21');
-let checkout = new Date('2023-06-23');
-let adults = '2';
-let children = '1';
+const checkin = new Date('2023/06/21');
+const checkout = new Date('2023/06/25');
+const adults = '2';
+const children = '1';
 
 const resp = scraperDiaudi(checkin, checkout, adults, children);
 console.log(resp)
