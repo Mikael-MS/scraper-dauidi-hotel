@@ -113,13 +113,13 @@ async function scraperDiaudi(checkin, checkout, adults, children) {
         return roomData
     });
 
-    fs.writeFileSync(`./quotation/${formatDate(checkin)}_${formatDate(checkout)}_${adults}`, JSON.stringify(roomData), { encoding: 'utf-8' })
+    fs.writeFileSync(`./quotation/${formatDate(checkin)}_${formatDate(checkout)}_${adults}.json`, JSON.stringify(roomData), { encoding: 'utf-8' })
 
 
     await browser.close();
 }
 
-const checkin = new Date('2023/06/21');
+const checkin = new Date('2023/06/22');
 const checkout = new Date('2023/06/25');
 const adults = '2';
 const children = '1';
